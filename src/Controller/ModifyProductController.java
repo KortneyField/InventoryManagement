@@ -3,16 +3,32 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller;
+package controller;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
+import model.Inventory;
+import model.Part;
+import model.Product;
 
 /**
  * FXML Controller class
@@ -20,74 +36,193 @@ import javafx.scene.control.TextField;
  * @author kortneyfield
  */
 public class ModifyProductController implements Initializable {
-
-    @FXML
-    private Button ExitButton;
-
-    @FXML
-    private Button DeleteProductButton;
-
-    @FXML
-    private Button AddProductButton;
-
-    @FXML
-    private Button SearchProductButton;
-
-    @FXML
-    private TextField SearchProductText;
-
-    @FXML
-    private Button CancelButton;
-
-    @FXML
-    private TextField MaxText;
-
-    @FXML
-    private TextField MinText;
-
-    @FXML
-    private TextField IdText;
-
-    @FXML
-    private TextField NameText;
-
-    @FXML
-    private TextField InventoryText;
-
-    @FXML
-    private TextField PriceText;
-
-    @FXML
-    private TextField CompanyText;
+    
+    Stage stage; 
+    Parent scene;
     
     @FXML
-    void OnActionAddModifyProduct(ActionEvent event) {
-
-    }
+    private Button BackButton;
 
     @FXML
-    void OnActionDeleteModifyProduct(ActionEvent event) {
-
-    }
+    private Button SaveButton;
 
     @FXML
-    void OnActionDisplayMainMenu(ActionEvent event) {
-
-    }
+    private TextField productIdText;
 
     @FXML
-    void OnActionSaveModifyProduct(ActionEvent event) {
+    private TextField productNameText;
 
+    @FXML
+    private TextField productInvText;
+
+    @FXML
+    private TextField productPriceText;
+
+    @FXML
+    private TextField productMaxText;
+
+    @FXML
+    private TextField productMinText;
+
+    @FXML
+    private Label label;
+
+    @FXML
+    private TableView<Part> PartTableMenuView;
+
+    @FXML
+    private TableColumn<?, ?> PartIDMenuCol;
+
+    @FXML
+    private TableColumn<?, ?> PartNameMenuCol;
+
+    @FXML
+    private TableColumn<?, ?> PartInvMenuCol;
+
+    @FXML
+    private TableColumn<?, ?> PartPriceMenuCol;
+
+    @FXML
+    private TableView<Part> PartAddTableView;
+
+    @FXML
+    private TableColumn<?, ?> PartIdAddCol;
+
+    @FXML
+    private TableColumn<?, ?> PartNameAddCol;
+
+    @FXML
+    private TableColumn<?, ?> PartInvAddCol;
+
+    @FXML
+    private TableColumn<?, ?> PartPriceAddCol;
+
+    @FXML
+    private TextField SearchText;
+    
+    public Product selectProduct(int id) {
+        for(Product product: Inventory.getAllProducts()) {
+            if(product.getId()==id)
+                return product;
+        }
+        return null;
     }
+    
+    @FXML
+    void OnActionSearchPart(ActionEvent event) {
+        String name = SearchText.getText();
+        ObservableList<Part> list = Inventory.lookUpPart(name);
+        if (list.isEmpty()) {
+            //Change text to a number
+            try {
+                int partId = Integer.parseInt(name);
+                //look up parts
+                Part partP = Inventory.lookUpPart(partId); 
+                //if not null, add to list
+                if (partP != null) {
+                    list.add(partP);
+                }
+            } 
+            catch (Exception e) {     
+            } 
+        }
+        PartAddTableView.setItems(list);
+    }
+    
+    @FXML
+    void OnActionSaveProduct(ActionEvent event) throws IOException {
+        System.out.println("You clicked the save button");
+        label.setText("Your work will be saved");
+        
+        try {
+        int id = Integer.parseInt(productIdText.getText()); 
+        String name = productNameText.getText();
+        double price = Double.parseDouble(productPriceText.getText());
+        int stock = Integer.parseInt(productInvText.getText());
+        int min = Integer.parseInt(productMaxText.getText());
+        int max = Integer.parseInt(productMinText.getText());
+        boolean productSource; 
 
+        Inventory.addProduct(new Product(id, name, price, stock, max, min));
+        
+        stage = (Stage) ((Button)event.getSource()).getScene().getWindow(); 
+        scene = FXMLLoader.load(getClass().getResource("/view/MainMenu.fxml"));
+        stage.setScene(new Scene(scene));
+        stage.show();  
+        }
+        catch (NumberFormatException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Invalid Information Entry");
+            alert.setContentText("You will no be able to save without correct information");
+            alert.showAndWait(); 
+        }
+    }
+    
+    @FXML
+    void OnActionCancel(ActionEvent event) throws IOException {
+        
+        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to cancel?", ButtonType.YES, ButtonType.NO);
+        confirmAlert.setTitle("Confirm Cancel");
+        confirmAlert.setHeaderText("Changes will be lost!");
+        Optional<ButtonType> response = confirmAlert.showAndWait();
+            if(response.isPresent() && response.get() == ButtonType.YES){
+                stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+                scene = FXMLLoader.load(getClass().getResource("/view/MainMenu.fxml"));
+                stage.setScene(new Scene(scene));
+                stage.show();
+            }else{
+                confirmAlert.hide();
+            }
+    }
+    
+    
+    
+    void setProductToModify(Product product) {
+        System.out.print(product.getId());
+         
+        productIdText.setText(Integer.toString(product.getId()));
+        productNameText.setText(product.getName());
+        productPriceText.setText(String.valueOf(product.getPrice()));
+        productMaxText.setText(String.valueOf(product.getMax()));
+        productMinText.setText(String.valueOf(product.getMin()));
+        productInvText.setText(String.valueOf(product.getStock()));   
+    }
+    
+    @FXML
+    void onActionAddPart(ActionEvent event) {
+        System.out.println("you pressed add part to list button");
+        
+        /*
+        if (PartTableMenuView.getSelectionModel().isEmpty()){
+            Alert alert=new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("No part found");
+            alert.setContentText("please select part");
+            alert.showAndWait();
+       }
+       else{
+            Part part = PartTableMenuView.getSelectionModel().getSelectedItem();            
+            Inventory.addPart(part);  
+         
+       }
+        */
+    }
+    
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        ObservableList partList = Inventory.getAllParts();
+        //productPartList.clear();
+        
+        PartAddTableView.setItems(partList);
+            PartIdAddCol.setCellValueFactory(new PropertyValueFactory<>("Id"));
+            PartNameAddCol.setCellValueFactory(new PropertyValueFactory<>("Name"));
+            PartInvAddCol.setCellValueFactory(new PropertyValueFactory<>("Stock"));
+            PartPriceAddCol.setCellValueFactory(new PropertyValueFactory<>("Price"));
     }    
 
     
+
     
 }

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="590.0" prefWidth="930.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddProductController">
+   <children>
+      <Label layoutX="28.0" layoutY="48.0" text="Add Product">
+         <font>
+            <Font size="21.0" />
+         </font></Label>
+      <Button fx:id="BackButton" layoutX="793.0" layoutY="535.0" mnemonicParsing="false" onAction="#OnActionCancel" prefWidth="70.0" text="Cancel" />
+      <Button fx:id="SaveButton" layoutX="711.0" layoutY="535.0" mnemonicParsing="false" onAction="#OnActionSaveProduct" prefHeight="26.0" prefWidth="70.0" text="Save" />
+      <HBox layoutX="153.0" layoutY="135.0" prefHeight="27.0" prefWidth="216.0" />
+      <GridPane layoutX="42.0" layoutY="158.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="132.0" minWidth="10.0" prefWidth="107.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="200.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Label text="ID" />
+            <Label text="Name" GridPane.rowIndex="1" />
+            <Label text="Inventory" GridPane.rowIndex="2" />
+            <Label text="Price/Cost" GridPane.rowIndex="3" />
+            <Label text="Max" GridPane.rowIndex="4" />
+            <TextField fx:id="productIdText" editable="false" maxWidth="150.0" promptText="Auto Gen- Disabled" GridPane.columnIndex="1" />
+            <TextField fx:id="productNameText" maxWidth="150.0" promptText="Part Name" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="productInventoryText" maxWidth="150.0" promptText="Inv" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="productPriceText" maxWidth="150.0" promptText="Price/cost" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <children>
+                  <TextField fx:id="productMaxText" maxWidth="60.0" promptText="Max" />
+                  <Label prefHeight="26.0" prefWidth="57.0" text="Min">
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
+                  </Label>
+                  <TextField fx:id="productMinText" maxWidth="78.0" prefHeight="27.0" prefWidth="78.0" promptText="Min">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+         </children>
+      </GridPane>
+      <Label fx:id="label" layoutX="28.0" layoutY="374.0" text="       " />
+      <TableView fx:id="PartTableMenuView" layoutX="393.0" layoutY="135.0" prefHeight="134.0" prefWidth="470.0">
+        <columns>
+          <TableColumn fx:id="PartIDMenuCol" prefWidth="84.0" text="Part ID" />
+          <TableColumn fx:id="PartNameMenuCol" prefWidth="163.0" text="Part Name" />
+            <TableColumn fx:id="PartInvMenuCol" prefWidth="118.0" text="Inventory Level" />
+            <TableColumn fx:id="PartPriceMenuCol" prefWidth="106.0" text="Price Per Unit " />
+        </columns>
+      </TableView>
+      <TableView fx:id="PartAddTableView" layoutX="393.0" layoutY="338.0" prefHeight="134.0" prefWidth="470.0">
+         <columns>
+            <TableColumn fx:id="PartIdAddCol" prefWidth="85.0" text="Part ID" />
+            <TableColumn fx:id="PartNameAddCol" prefWidth="162.0" text="Part Name " />
+            <TableColumn fx:id="PartInvAddCol" prefWidth="118.0" text="Inventory Level" />
+            <TableColumn fx:id="PartPriceAddCol" prefWidth="106.0" text="Price Per Unit " />
+         </columns>
+      </TableView>
+      <Button layoutX="793.0" layoutY="279.0" mnemonicParsing="false" onAction="#onActionAddPart" prefWidth="70.0" text="Add" />
+      <Button layoutX="793.0" layoutY="481.0" mnemonicParsing="false" prefWidth="70.0" text="Delete" />
+      <Button layoutX="393.0" layoutY="95.0" mnemonicParsing="false" onAction="#onActionSearchPartListon" prefWidth="70.0" text="Search" />
+      <TextField fx:id="partSearchText" layoutX="471.0" layoutY="95.0" prefHeight="27.0" prefWidth="267.0" />
+   </children>
+</AnchorPane>

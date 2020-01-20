@@ -9,6 +9,7 @@
 //  - select delete error message. 
 //  - save modify changes in modify part and product. 
 //  - select part and place in product's part list. 
+//  - using as an example of how to use git.
 
 
 package controller;

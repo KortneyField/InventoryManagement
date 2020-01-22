@@ -59,8 +59,7 @@ public class AddPartController implements Initializable {
     @FXML
     private TextField partPriceText;
 
-    @FXML
-    private TextField partCompNameText;
+    
 
     @FXML
     private TextField partMaxText;
@@ -79,6 +78,9 @@ public class AddPartController implements Initializable {
     
      @FXML
     private Label sourceLabel;
+     
+    @FXML
+    private TextField sourceText;
 
     @FXML
     void OnActionCancel(ActionEvent event) throws IOException {
@@ -101,7 +103,9 @@ public class AddPartController implements Initializable {
     void OnActionSavePart(ActionEvent event) throws IOException {
         try 
         {
-            int id = 500; //Integer.parseInt(partIdText.getText()); 
+            int lastPartIndex = Inventory.getAllParts().size() - 1; // convert to index
+            int lastPartId = Inventory.getAllParts().get(lastPartIndex).getId();
+            int id = lastPartId + 1;
             String name = partNameText.getText();
             double price = Double.parseDouble(partPriceText.getText());
             int stock = Integer.parseInt(partInventoryText.getText());
@@ -121,7 +125,7 @@ public class AddPartController implements Initializable {
                 Inventory.addPart(new InHouse(id, name, price, stock, max, min, machineID));
             }
             else {
-                 String companyName = partCompNameText.getText();
+                 String companyName = sourceText.getText();
                  Inventory.addPart(new Outsourced(id, name, price, stock, max, min, companyName));
             }
             
@@ -130,11 +134,15 @@ public class AddPartController implements Initializable {
             errorAlert.setTitle("Min/Max Inventory Error");
             errorAlert.setHeaderText("Min Count is greater than Max Count");
             errorAlert.setContentText("Min Part Count MUST be LESS than Max Part Count");
+          
 
             Optional<ButtonType> response = errorAlert.showAndWait();
-                if(response.get() == ButtonType.OK){
-                }
+                    if(response.get() == ButtonType.OK){
+                       // do nothing
+                    }                
             }
+            
+            
             
             stage = (Stage) ((Button)event.getSource()).getScene().getWindow(); 
             scene = FXMLLoader.load(getClass().getResource("/view/MainMenu.fxml"));
@@ -163,15 +171,15 @@ public class AddPartController implements Initializable {
      @FXML
     void onActionInHouse(ActionEvent event) {
        sourceLabel.setText("Machine ID");
-       partCompNameText.setPromptText("Mach ID"); 
-       partCompNameText.setText("");
+       sourceText.setPromptText("Mach ID"); 
+       sourceText.setText("");
     }
 
     @FXML
     void onActionOutsourced(ActionEvent event) {
         sourceLabel.setText("Company Name");
-        partCompNameText.setPromptText("Comp Name");
-        partCompNameText.setText("");
+        sourceText.setPromptText("Comp Name");
+        sourceText.setText("");
     }
     
     /**
@@ -181,7 +189,7 @@ public class AddPartController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         partInHouseRdBtn.setSelected(true);
         sourceLabel.setText("Machine ID: ");
-        partCompNameText.setPromptText("Mach ID");
+        sourceText.setPromptText("Mach ID");
     }    
     
 }

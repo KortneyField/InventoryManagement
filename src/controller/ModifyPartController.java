@@ -81,7 +81,7 @@ public class ModifyPartController implements Initializable {
     private Label sourceLabel;
      
      @FXML
-    private TextField partCompNameText;
+    private TextField sourceText;
 
     
 
@@ -115,35 +115,32 @@ public class ModifyPartController implements Initializable {
             boolean partSource; 
             
             /*
-            ??? NEED TO UPDATE THE INFORMATION INTO THE PART TABLE
-            //remove the old part from inventory 
-                
-            //lookuppart then remove from inventory
-            Inventory.lookUpPart().
             if (inHouseRdButton.isSelected())
-                partSource = true; 
+                partSource = true;
             else
-                partSource = false; 
+                partSource = false; //inhouse
             
-            if (partSource) { //inhouse
+            
+            
+            if (partSource){
                 //get mach id from text field
-                String inhouse = partCompNameText.getText(); 
+                int inhouse = Integer.parseInt(sourceText.getText());
                 //create inhouse part 
                 InHouse part = (InHouse)part;
-                //add part to inventory list    
+                //add part to inventory list
+                int machineID = inhouse;
+                Inventory.addPart(new InHouse(id, name, price, stock, max, min, machineID));
             }
             else { //outsourced
                 //get comp name from text field
-                partCompNameText.getText(); 
+                String inhouse = sourceText.getText();  
                 //create outsource part 
                 Outsourced part = (Outsourced)part;
                 //add part to inventory list 
-                
+                String compName = inhouse;
+                Inventory.addPart(new Outsourced(id, name, price, stock, max, min, compName));
             }
             */
-            
-        
-            //Inventory.addPart(new Part(id, name, price, stock, max, min, partSource));
         
             stage = (Stage) ((Button)event.getSource()).getScene().getWindow(); 
             scene = FXMLLoader.load(getClass().getResource("/view/MainMenu.fxml"));
@@ -163,16 +160,16 @@ public class ModifyPartController implements Initializable {
     @FXML
     void onActionInHouse(ActionEvent event) {
        sourceLabel.setText("Machine ID");
-       partCompNameText.setPromptText("Mach ID"); 
-       partCompNameText.setText("");
+       sourceText.setPromptText("Mach ID"); 
+       sourceText.setText("");
     }
     
     
     @FXML
     void onActionOutsourced(ActionEvent event) {
         sourceLabel.setText("Company Name");
-        partCompNameText.setPromptText("Comp Name");
-        partCompNameText.setText("");
+        sourceText.setPromptText("Comp Name");
+        sourceText.setText("");
     }
     
     //To fill in the textboxes from the table on main menu. 
@@ -189,16 +186,16 @@ public class ModifyPartController implements Initializable {
             if (part instanceof InHouse) {
                 inHouseRdButton.setSelected(true);
                 sourceLabel.setText("Machine ID");
-                partCompNameText.setPromptText("Mach ID");
+                sourceText.setPromptText("Mach ID");
                 InHouse inhouse = (InHouse)part;
-                partCompNameText.setText(Integer.toString(inhouse.getMechineId()));            
+                sourceText.setText(Integer.toString(inhouse.getMechineId()));            
                 }
             else { //outsourced
                 outsourcedRdButton.setSelected(true);
                 sourceLabel.setText("Company Name");
-                partCompNameText.setPromptText("Comp Name");
+                sourceText.setPromptText("Comp Name");
                 Outsourced outsource = (Outsourced) part; 
-                partCompNameText.setText(outsource.getCompanyName());
+                sourceText.setText(outsource.getCompanyName());
                 }
         }
      

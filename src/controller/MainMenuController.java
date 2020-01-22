@@ -176,13 +176,13 @@ public class MainMenuController implements Initializable {
         catch (NullPointerException e) 
             {
                 Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setTitle("Error in Product Selection");
-            errorAlert.setHeaderText("No Product Selected to modify");
-            errorAlert.setContentText("You must click on and select a product to modify.");
+                errorAlert.setTitle("Error in Product Selection");
+                errorAlert.setHeaderText("No Product Selected to modify");
+                errorAlert.setContentText("You must click on and select a product to modify.");
 
-            Optional<ButtonType> response = errorAlert.showAndWait();
-                if(response.get() == ButtonType.OK){
-                   // do nothing
+                Optional<ButtonType> response = errorAlert.showAndWait();
+                    if(response.get() == ButtonType.OK){
+                       // do nothing
 
             }    
             }

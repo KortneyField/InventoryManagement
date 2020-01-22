@@ -126,7 +126,9 @@ public class AddProductController implements Initializable {
         label.setText("Your work will be saved");
         
         try {
-        int id = Integer.parseInt(productIdText.getText()); 
+        int lastProductIndex = Inventory.getAllProducts().size() - 1; // convert to index
+        int lastProductId = Inventory.getAllProducts().get(lastProductIndex).getId();
+        int id = lastProductId + 1; 
         String name = productNameText.getText();
         double price = Double.parseDouble(productPriceText.getText());
         int stock = Integer.parseInt(productInventoryText.getText());
@@ -193,7 +195,7 @@ public class AddProductController implements Initializable {
     void onActionAddPart(ActionEvent event) {
         System.out.println("you pressed add part to list button");
         
-        /*
+     /*   
         if (PartTableMenuView.getSelectionModel().isEmpty()){
             Alert alert=new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("No part found");
@@ -202,10 +204,10 @@ public class AddProductController implements Initializable {
        }
        else{
             Part part = PartTableMenuView.getSelectionModel().getSelectedItem();            
-            Inventory.addPart(part);  
-         
+            partsList = Inventory.addPart(part);  
+            PartAddTableView.setItems(partsList);
        }
-        */
+       */ 
     }
     
     

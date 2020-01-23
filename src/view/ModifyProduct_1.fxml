@@ -63,15 +63,15 @@
          </children>
       </GridPane>
       <Label fx:id="label" layoutX="38.0" layoutY="384.0" text="       " />
-      <TableView fx:id="PartAddTableView" layoutX="403.0" layoutY="145.0" prefHeight="134.0" prefWidth="470.0">
+      <TableView fx:id="PartTableMenuView" layoutX="403.0" layoutY="145.0" prefHeight="134.0" prefWidth="470.0">
          <columns>
-            <TableColumn fx:id="PartIdAddCol" prefWidth="84.0" text="Part ID" />
-            <TableColumn fx:id="PartNameAddCol" prefWidth="163.0" text="Part Name" />
-            <TableColumn fx:id="PartInvAddCol" prefWidth="118.0" text="Inventory Level" />
-            <TableColumn fx:id="PartPriceAddCol" prefWidth="106.0" text="Price Per Unit " />
+            <TableColumn fx:id="PartIdCol" prefWidth="84.0" text="Part ID" />
+            <TableColumn fx:id="PartNameCol" prefWidth="163.0" text="Part Name" />
+            <TableColumn fx:id="PartInvCol" prefWidth="118.0" text="Inventory Level" />
+            <TableColumn fx:id="PartPriceCol" prefWidth="106.0" text="Price Per Unit " />
          </columns>
       </TableView>
-      <TableView fx:id="productTableView" layoutX="403.0" layoutY="348.0" prefHeight="134.0" prefWidth="470.0">
+      <TableView fx:id="PartOfProductTableView" layoutX="403.0" layoutY="348.0" prefHeight="134.0" prefWidth="470.0">
          <columns>
             <TableColumn fx:id="partIdOfProductCol" prefWidth="85.0" text="Part ID" />
             <TableColumn fx:id="partNameOfProductCol" prefWidth="162.0" text="Part Name " />
@@ -80,7 +80,7 @@
          </columns>
       </TableView>
       <Button layoutX="803.0" layoutY="289.0" mnemonicParsing="false" onAction="#onActionAddPart" prefWidth="70.0" text="Add" />
-      <Button layoutX="803.0" layoutY="491.0" mnemonicParsing="false" prefWidth="70.0" text="Delete" />
+      <Button layoutX="803.0" layoutY="491.0" mnemonicParsing="false" onAction="#onActionDeletePart" prefWidth="70.0" text="Delete" />
       <Button layoutX="403.0" layoutY="105.0" mnemonicParsing="false" onAction="#OnActionSearchPart" prefWidth="70.0" text="Search" />
       <TextField fx:id="SearchText" layoutX="481.0" layoutY="105.0" prefHeight="27.0" prefWidth="267.0" />
    </children>

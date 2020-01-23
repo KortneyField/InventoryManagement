@@ -110,37 +110,38 @@ public class ModifyPartController implements Initializable {
             String name = partNameText.getText();
             double price = Double.parseDouble(partPriceText.getText());
             int stock = Integer.parseInt(partStockText.getText());
-            int min = Integer.parseInt(partMaxText.getText());
-            int max = Integer.parseInt(partMinText.getText());
+            int min = Integer.parseInt(partMinText.getText());
+            int max = Integer.parseInt(partMaxText.getText());
             boolean partSource; 
             
-            /*
+            if(min > max){
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("Min/Max Inventory Error");
+            errorAlert.setHeaderText("Min Count is greater than Max Count");
+            errorAlert.setContentText("Min Part Count MUST be LESS than Max Part Count");
+            errorAlert.showAndWait();
+            return; 
+            }
+            
+            Inventory.deletePart(Inventory.lookUpPart(id));
+            
             if (inHouseRdButton.isSelected())
                 partSource = true;
             else
                 partSource = false; //inhouse
-            
-            
-            
+
             if (partSource){
                 //get mach id from text field
-                int inhouse = Integer.parseInt(sourceText.getText());
-                //create inhouse part 
-                InHouse part = (InHouse)part;
+                int machineID = Integer.parseInt(sourceText.getText());
                 //add part to inventory list
-                int machineID = inhouse;
                 Inventory.addPart(new InHouse(id, name, price, stock, max, min, machineID));
             }
             else { //outsourced
                 //get comp name from text field
-                String inhouse = sourceText.getText();  
-                //create outsource part 
-                Outsourced part = (Outsourced)part;
-                //add part to inventory list 
-                String compName = inhouse;
+                String compName = sourceText.getText();  
                 Inventory.addPart(new Outsourced(id, name, price, stock, max, min, compName));
             }
-            */
+            
         
             stage = (Stage) ((Button)event.getSource()).getScene().getWindow(); 
             scene = FXMLLoader.load(getClass().getResource("/view/MainMenu.fxml"));

@@ -80,7 +80,7 @@
          </columns>
       </TableView>
       <Button layoutX="793.0" layoutY="279.0" mnemonicParsing="false" onAction="#onActionAddPart" prefWidth="70.0" text="Add" />
-      <Button layoutX="793.0" layoutY="481.0" mnemonicParsing="false" prefWidth="70.0" text="Delete" />
+      <Button layoutX="793.0" layoutY="481.0" mnemonicParsing="false" onAction="#onActionDelete" prefWidth="70.0" text="Delete" />
       <Button layoutX="393.0" layoutY="95.0" mnemonicParsing="false" onAction="#onActionSearchPartListon" prefWidth="70.0" text="Search" />
       <TextField fx:id="partSearchText" layoutX="471.0" layoutY="95.0" prefHeight="27.0" prefWidth="267.0" />
    </children>

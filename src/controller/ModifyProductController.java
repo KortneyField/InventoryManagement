@@ -71,34 +71,47 @@ public class ModifyProductController implements Initializable {
     private TableView<Part> PartTableMenuView;
 
     @FXML
-    private TableColumn<?, ?> PartIDMenuCol;
+    private TableColumn<?, ?> PartIdCol;
 
     @FXML
-    private TableColumn<?, ?> PartNameMenuCol;
+    private TableColumn<?, ?> PartNameCol;
 
     @FXML
-    private TableColumn<?, ?> PartInvMenuCol;
+    private TableColumn<?, ?> PartInvCol;
 
     @FXML
-    private TableColumn<?, ?> PartPriceMenuCol;
+    private TableColumn<?, ?> PartPriceCol;
 
     @FXML
-    private TableView<Part> PartAddTableView;
+    private TableView<Part> PartOfProductTableView;
 
     @FXML
-    private TableColumn<?, ?> PartIdAddCol;
+    private TableColumn<?, ?> partIdOfProductCol;
 
     @FXML
-    private TableColumn<?, ?> PartNameAddCol;
+    private TableColumn<?, ?> partNameOfProductCol;
 
     @FXML
-    private TableColumn<?, ?> PartInvAddCol;
+    private TableColumn<?, ?> partInvOfProductCol;
 
     @FXML
-    private TableColumn<?, ?> PartPriceAddCol;
+    private TableColumn<?, ?> partPriceOfProductCol;
 
     @FXML
     private TextField SearchText;
+    
+    ObservableList partsAddedList = FXCollections.observableArrayList();//gives an empty list
+    
+    void setProductToModify(Product product) {
+        System.out.print(product.getId());
+         
+        productIdText.setText(Integer.toString(product.getId()));
+        productNameText.setText(product.getName());
+        productPriceText.setText(String.valueOf(product.getPrice()));
+        productMaxText.setText(String.valueOf(product.getMax()));
+        productMinText.setText(String.valueOf(product.getMin()));
+        productInvText.setText(String.valueOf(product.getStock()));   
+    }
     
     public Product selectProduct(int id) {
         for(Product product: Inventory.getAllProducts()) {
@@ -126,7 +139,7 @@ public class ModifyProductController implements Initializable {
             catch (Exception e) {     
             } 
         }
-        PartAddTableView.setItems(list);
+        PartTableMenuView.setItems(list);
     }
     
     @FXML
@@ -143,8 +156,9 @@ public class ModifyProductController implements Initializable {
         int max = Integer.parseInt(productMinText.getText());
         boolean productSource; 
 
+        Inventory.deleteProduct(Inventory.lookUpProduct(id));
         Inventory.addProduct(new Product(id, name, price, stock, max, min));
-        
+             
         stage = (Stage) ((Button)event.getSource()).getScene().getWindow(); 
         scene = FXMLLoader.load(getClass().getResource("/view/MainMenu.fxml"));
         stage.setScene(new Scene(scene));
@@ -156,6 +170,8 @@ public class ModifyProductController implements Initializable {
             alert.setContentText("You will no be able to save without correct information");
             alert.showAndWait(); 
         }
+        
+
     }
     
     @FXML
@@ -177,34 +193,51 @@ public class ModifyProductController implements Initializable {
     
     
     
-    void setProductToModify(Product product) {
-        System.out.print(product.getId());
-         
-        productIdText.setText(Integer.toString(product.getId()));
-        productNameText.setText(product.getName());
-        productPriceText.setText(String.valueOf(product.getPrice()));
-        productMaxText.setText(String.valueOf(product.getMax()));
-        productMinText.setText(String.valueOf(product.getMin()));
-        productInvText.setText(String.valueOf(product.getStock()));   
-    }
+    
     
     @FXML
     void onActionAddPart(ActionEvent event) {
-        System.out.println("you pressed add part to list button");
+        System.out.println("You pressed add");
+        Part selectedPart = PartTableMenuView.getSelectionModel().getSelectedItem();
+            
+            if (selectedPart == null) {
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("Error in Part Selection");
+            errorAlert.setHeaderText("No Part Selected to add");
+            errorAlert.setContentText("You must click on and select a product to add.");
+            errorAlert.showAndWait();
+            return;
+            }
+            
+            partsAddedList.add(selectedPart);
+        }
+    
+    @FXML
+    void onActionDeletePart(ActionEvent event) {
+        System.out.println("you pressed delete");
+        Part selectedPartofProduct = PartOfProductTableView.getSelectionModel().getSelectedItem();
         
-        /*
-        if (PartTableMenuView.getSelectionModel().isEmpty()){
-            Alert alert=new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("No part found");
-            alert.setContentText("please select part");
-            alert.showAndWait();
-       }
-       else{
-            Part part = PartTableMenuView.getSelectionModel().getSelectedItem();            
-            Inventory.addPart(part);  
-         
-       }
-        */
+        if (selectedPartofProduct == null) {
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("Error in Part Selection");
+            errorAlert.setHeaderText("No Part Selected to modify");
+            errorAlert.setContentText("You must click on and select a product to delete.");
+            errorAlert.showAndWait();
+            return;
+            }
+        
+        
+            Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete " + selectedPartofProduct.getName() + "?", ButtonType.YES, ButtonType.NO);
+            confirmAlert.setTitle("Confirm Part Deletioon");
+            confirmAlert.setHeaderText("Deleted items CANNOT be recovered!");
+            
+            Optional<ButtonType> response = confirmAlert.showAndWait();
+            if(response.isPresent() && response.get() == ButtonType.YES){
+                    partsAddedList.remove(selectedPartofProduct);
+                    //PartOfProductTableView.refresh();
+            }else{
+                confirmAlert.hide();
+            } 
     }
     
     /**
@@ -215,11 +248,17 @@ public class ModifyProductController implements Initializable {
         ObservableList partList = Inventory.getAllParts();
         //productPartList.clear();
         
-        PartAddTableView.setItems(partList);
-            PartIdAddCol.setCellValueFactory(new PropertyValueFactory<>("Id"));
-            PartNameAddCol.setCellValueFactory(new PropertyValueFactory<>("Name"));
-            PartInvAddCol.setCellValueFactory(new PropertyValueFactory<>("Stock"));
-            PartPriceAddCol.setCellValueFactory(new PropertyValueFactory<>("Price"));
+        PartTableMenuView.setItems(partList);
+            PartIdCol.setCellValueFactory(new PropertyValueFactory<>("Id"));
+            PartNameCol.setCellValueFactory(new PropertyValueFactory<>("Name"));
+            PartInvCol.setCellValueFactory(new PropertyValueFactory<>("Stock"));
+            PartPriceCol.setCellValueFactory(new PropertyValueFactory<>("Price"));
+            
+        PartOfProductTableView.setItems(partsAddedList);
+            partIdOfProductCol.setCellValueFactory(new PropertyValueFactory<>("Id"));
+            partNameOfProductCol.setCellValueFactory(new PropertyValueFactory<>("Name"));
+            partInvOfProductCol.setCellValueFactory(new PropertyValueFactory<>("Stock"));
+            partPriceOfProductCol.setCellValueFactory(new PropertyValueFactory<>("Price"));
     }    
 
     

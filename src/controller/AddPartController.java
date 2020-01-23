@@ -114,7 +114,16 @@ public class AddPartController implements Initializable {
             boolean partSource; 
             int partMin = this.getTxtMin();
             int partMax = this.getTxtMax();
-        
+            
+            if(partMin > partMax){
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("Min/Max Inventory Error");
+            errorAlert.setHeaderText("Min Count is greater than Max Count");
+            errorAlert.setContentText("Min Part Count MUST be LESS than Max Part Count");
+            errorAlert.showAndWait();
+            return; 
+            }
+            
             if (partInHouseRdBtn.isSelected())
                 partSource = true;
             else
@@ -129,18 +138,7 @@ public class AddPartController implements Initializable {
                  Inventory.addPart(new Outsourced(id, name, price, stock, max, min, companyName));
             }
             
-            if(partMin > partMax){
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setTitle("Min/Max Inventory Error");
-            errorAlert.setHeaderText("Min Count is greater than Max Count");
-            errorAlert.setContentText("Min Part Count MUST be LESS than Max Part Count");
-          
-
-            Optional<ButtonType> response = errorAlert.showAndWait();
-                    if(response.get() == ButtonType.OK){
-                       // do nothing
-                    }                
-            }
+            
             
             
             

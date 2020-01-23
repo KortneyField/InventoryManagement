@@ -37,12 +37,12 @@ public class main extends Application {
      */
     public static void main(String[] args) {
         
-        Part part1 = new InHouse(1, "Refridgerator", 22.2, 2, 100, 0, 12);
-        Part part2 = new Outsourced(2, "Sink", 112.2, 24, 100, 0, "Ace Hardware");
-        Part part3 = new InHouse(3, "Queen Bed", 5.2, 60, 100, 0, 13);
-        Part part4 = new InHouse(4, "Dressor Drawer", 5.2, 60, 100, 0, 14);
-        Part part5 = new InHouse(5, "Couch", 5.2, 60, 100, 0, 15);
-        Part part6 = new InHouse(6, "TV", 5.2, 60, 100, 0, 16);
+        Part part1 = new InHouse    (1, "Refridgerator",  22.2,  2, 100, 0, 12);
+        Part part2 = new Outsourced (2, "Sink",          112.2, 24, 100, 0, "Ace Hardware");
+        Part part3 = new InHouse    (3, "Queen Bed",       5.2, 60, 100, 0, 13);
+        Part part4 = new InHouse    (4, "Dressor Drawer", 15.2, 50, 100, 0, 14);
+        Part part5 = new InHouse    (5, "Couch",         225.2, 66, 100, 0, 15);
+        Part part6 = new InHouse    (6, "TV",           1005.2, 88, 100, 0, 16);
         
         Inventory.addPart(part1);
         Inventory.addPart(part2);

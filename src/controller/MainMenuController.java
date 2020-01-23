@@ -196,6 +196,16 @@ public class MainMenuController implements Initializable {
         label.setText("You clicked delete part!");
        
             Part selectedPart = PartTableView.getSelectionModel().getSelectedItem();
+            
+            if (selectedPart == null) {
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("Error in Part Selection");
+            errorAlert.setHeaderText("No Part Selected to modify");
+            errorAlert.setContentText("You must click on and select a product to delete.");
+            errorAlert.showAndWait();
+            return;
+            }
+            
             Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete " + selectedPart.getName() + "?", ButtonType.YES, ButtonType.NO);
             confirmAlert.setTitle("Confirm Part Deletioon");
             confirmAlert.setHeaderText("Deleted items CANNOT be recovered!");
@@ -217,6 +227,17 @@ public class MainMenuController implements Initializable {
         label.setText("You clicked delete Product!");
         
         Product selectedProduct = ProductTableView.getSelectionModel().getSelectedItem();
+        
+        if (selectedProduct == null) {
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("Error in Part Selection");
+            errorAlert.setHeaderText("No Part Selected to modify");
+            errorAlert.setContentText("You must click on and select a product to delete.");
+            errorAlert.showAndWait();
+            return;
+            }
+        
+        
             Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete " + selectedProduct.getName() + "?", ButtonType.YES, ButtonType.NO);
             confirmAlert.setTitle("Confirm Part Deletioon");
             confirmAlert.setHeaderText("Deleted items CANNOT be recovered!");

@@ -103,7 +103,7 @@ public class AddProductController implements Initializable {
     @FXML
     private TextField partSearchText;
 
-    ObservableList partsAddedList = FXCollections.observableArrayList();//gives an empty list
+    ObservableList <Part> partsAddedList = FXCollections.observableArrayList();//gives an empty list
     
      
     @FXML
@@ -139,7 +139,7 @@ public class AddProductController implements Initializable {
         int stock = Integer.parseInt(productInventoryText.getText());
         int max = Integer.parseInt(productMaxText.getText());
         int min = Integer.parseInt(productMinText.getText());
-        boolean productSource; 
+         
         
         
         if(min > max){
@@ -150,13 +150,24 @@ public class AddProductController implements Initializable {
             errorAlert.showAndWait();
             return; 
             } 
+        
         //break this up in mul lines.  
         Product newProduct = new Product(id, name, price, stock, max, min);
-        Inventory.addProduct(newProduct);
-        //take the parts in the added list and add to this is newProduct. 
-        //ObservableList partsAddedList = Inventory.getAllParts();
-        //newProduct.add(partsAddedList);
+            productNameText.getText(); 
+            Double.parseDouble(productPriceText.getText()); 
+            Integer.parseInt(productInventoryText.getText()); 
+            Integer.parseInt(productMinText.getText()); 
+            Integer.parseInt(productMaxText.getText());
         
+        //take the parts in the added list and add to this is newProduct. 
+        //newProduct.add(partsAddedList); 
+        //Product.addAssociatedPart().
+        
+        for (Part part : partsAddedList){
+            newProduct.addAssociatedPart(part);
+        }
+        
+        Inventory.addProduct(newProduct);
         
         stage = (Stage) ((Button)event.getSource()).getScene().getWindow(); 
         scene = FXMLLoader.load(getClass().getResource("/view/MainMenu.fxml"));

@@ -100,7 +100,7 @@ public class ModifyProductController implements Initializable {
     @FXML
     private TextField SearchText;
     
-    ObservableList partsAddedList = FXCollections.observableArrayList();//gives an empty list
+    ObservableList <Part> partsAddedList = FXCollections.observableArrayList();//gives an empty list
     
     void setProductToModify(Product product) {
         System.out.print(product.getId());
@@ -110,7 +110,9 @@ public class ModifyProductController implements Initializable {
         productPriceText.setText(String.valueOf(product.getPrice()));
         productMaxText.setText(String.valueOf(product.getMax()));
         productMinText.setText(String.valueOf(product.getMin()));
-        productInvText.setText(String.valueOf(product.getStock()));   
+        productInvText.setText(String.valueOf(product.getStock()));
+        
+        partsAddedList.addAll(product.getAllAssociatedParts());
     }
     
     public Product selectProduct(int id) {
@@ -152,12 +154,31 @@ public class ModifyProductController implements Initializable {
         String name = productNameText.getText();
         double price = Double.parseDouble(productPriceText.getText());
         int stock = Integer.parseInt(productInvText.getText());
-        int min = Integer.parseInt(productMaxText.getText());
-        int max = Integer.parseInt(productMinText.getText());
-        boolean productSource; 
+        int max = Integer.parseInt(productMaxText.getText());
+        int min = Integer.parseInt(productMinText.getText());
+        
+        if(min > max){
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("Min/Max Inventory Error");
+            errorAlert.setHeaderText("Min Count is greater than Max Count");
+            errorAlert.setContentText("Min Part Count MUST be LESS than Max Part Count");
+            errorAlert.showAndWait();
+            return; 
+            } 
 
         Inventory.deleteProduct(Inventory.lookUpProduct(id));
-        Inventory.addProduct(new Product(id, name, price, stock, max, min));
+        Product newProduct = new Product(id, name, price, stock, max, min);
+        
+        
+        for (Part part : partsAddedList){
+            newProduct.addAssociatedPart(part);
+        }
+        
+        Inventory.addProduct(newProduct);
+        
+        
+        
+        
              
         stage = (Stage) ((Button)event.getSource()).getScene().getWindow(); 
         scene = FXMLLoader.load(getClass().getResource("/view/MainMenu.fxml"));
@@ -170,6 +191,7 @@ public class ModifyProductController implements Initializable {
             alert.setContentText("You will no be able to save without correct information");
             alert.showAndWait(); 
         }
+        
         
 
     }
